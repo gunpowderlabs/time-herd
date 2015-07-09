@@ -1,0 +1,10 @@
+ion-content ng-controller="TimerController as timer"
+  div ng-hide="timer.timer.pause"
+    | {{timer.timer.secondsLeft}}
+    button.button.button-clear.button-positive on-tap="timer.stop()" 
+      | Stop
+
+  div ng-show="timer.timer.pause"
+    input ng-model="timer.timer.secondsLeft" type="number"
+    button.button.button-clear.button-positive on-tap="timer.start()" 
+      | Start

@@ -1,4 +1,8 @@
+import * as timers from './timers';
+
 var app = angular.module('starter', ['ionic']);
+
+app.controller('TimerController', timers.TimerController);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
