@@ -1,6 +1,10 @@
 export class TimerController {
-  constructor($interval) {
+  constructor($interval, $firebaseObject, $scope) {
+    var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
+    var syncTimer = $firebaseObject(ref);
+
     this.timer = {secondsLeft: 10, pause: false};
+    syncTimer.$bindTo($scope, "timer");
     this.$interval = $interval;
     this.start();
   }
