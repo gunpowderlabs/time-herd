@@ -3,18 +3,42 @@ var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
+var babel = require('gulp-babel');
+var slm = require('gulp-slm');
+var sourcemaps = require('gulp-sourcemaps');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var amdOptimize = require('amd-optimize');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  js: ['./app/js/**/*.js'],
+  html: ['./app/templates/**/*.slim'],
+  sass: ['./app/scss/**/*.scss'],
 };
 
-gulp.task('default', ['sass']);
+gulp.task('build', ['sass', 'js', 'html']);
+
+gulp.task('default', ['build']);
+
+gulp.task('js', function(done) {
+  gulp.src(paths.js)
+    .pipe(babel({modules: 'amd'}))
+    .pipe(amdOptimize('app', {}))
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('./www/js/'))
+    .on('end', done);
+});
+
+gulp.task('html', function(done) {
+  gulp.src(paths.html)
+    .pipe(slm())
+    .pipe(gulp.dest('./www/templates/'))
+    .on('end', done);
+});
 
 gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
+  gulp.src('./app/scss/ionic.app.scss')
     .pipe(sass({
       errLogToConsole: true
     }))
@@ -29,6 +53,8 @@ gulp.task('sass', function(done) {
 
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.js, ['js']);
+  gulp.watch(paths.html, ['html']);
 });
 
 gulp.task('install', ['git-check'], function() {
