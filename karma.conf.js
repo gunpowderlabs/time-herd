@@ -17,6 +17,10 @@ module.exports = function(config) {
     files: [
       {pattern: 'app/js/**/*.js', included: false},
       {pattern: 'spec/**/*spec.js', included: false},
+      'www/lib/ionic/js/ionic.bundle.js',
+      'www/lib/angular-mocks/angular-mocks.js',
+      'www/lib/firebase/firebase.js',
+      'www/lib/angularfire/dist/angularfire.js',
       'spec/main.js'
     ],
 

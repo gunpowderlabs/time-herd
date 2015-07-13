@@ -3,6 +3,7 @@ import * as timers from './timers';
 var app = angular.module('starter', ['ionic', 'firebase']);
 
 app.controller('TimerController', timers.TimerController);
+app.factory('timer', timers.timer);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

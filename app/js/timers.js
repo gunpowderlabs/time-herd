@@ -1,29 +1,48 @@
 export class TimerController {
-  constructor($interval, $firebaseObject, $scope) {
-    var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
-    this.timer = $firebaseObject(ref);
-
-    this.timer.secondsLeft = 10;
-    this.pause = false;
-    this.$interval = $interval;
-    this.start();
+  constructor($scope, timer) {
+    this.timer = timer()
   }
   stop() {
-    this.timer.pause = true;
-    this.timer.$save();
-    this.$interval.cancel(this.tick);
+    this.timer.stop();
   }
   start() {
-    this.timer.pause = false;
-    this.timer.$save();
-    if (this.timer.secondsLeft <= 0) { return; }
-    this.tick = this.$interval(() => {
-      this.timer.secondsLeft -= 1
-      this.timer.$save();
-    }, 1000, this.timer.secondsLeft);
+    this.timer.start();
   }
 }
 
-export function timer() {
-  return {secondsLeft: 100};
+export function timer($firebaseObject, $interval) {
+  return function(secondsLeft = 10) {
+    var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
+    var timerSync = $firebaseObject(ref);
+
+    timerSync.secondsLeft = secondsLeft;
+    timerSync.pause = false;
+
+    var timer = {
+      get secondsLeft() { return timerSync.secondsLeft; },
+      get pause() { return timerSync.pause; },
+
+      stop() {
+        timerSync.pause = true;
+        timerSync.$save();
+
+        $interval.cancel(timer.tick);
+      },
+
+      start() {
+        timerSync.pause = false;
+        timerSync.$save();
+
+        if (timerSync.secondsLeft <= 0) { return; }
+        timer.tick = $interval(() => {
+          timerSync.secondsLeft -= 1
+          timerSync.$save();
+        }, 1000, timerSync.secondsLeft);
+      }
+    }
+
+    timer.start();
+
+    return timer;
+  };
 }
