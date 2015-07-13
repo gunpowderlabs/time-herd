@@ -23,3 +23,7 @@ export class TimerController {
     }, 1000, this.timer.secondsLeft);
   }
 }
+
+export function timer() {
+  return {secondsLeft: 100};
+}
