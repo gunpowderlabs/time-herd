@@ -5,7 +5,7 @@ describe("Timer", () => {
 
   it("newly created timer is running", inject(timer => {
     expect(timer().secondsLeft).toEqual(25*60);
-    expect(timer().pause).toEqual(false);
+    expect(timer().paused).toEqual(false);
   }));
 
   it("counts down the timer", inject((timer, $interval) => {

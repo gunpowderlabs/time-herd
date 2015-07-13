@@ -38,7 +38,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .counter {
-  height: 100%;
   line-height: 200px;
   font-size: 35px;
 }
@@ -46,3 +45,28 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .margin-top-xxl {
   margin-top: 50px;
 }
+
+.height-3x {
+  line-height: 3em;
+}
+
+.font-2x {
+  font-size: 2em;
+}
+
+.font-3x {
+  font-size: 3em;
+}
+
+.color-assertive {
+  color: $assertive;
+}
+
+.color-royal {
+  color: $royal;
+}
+
+.color-positive {
+  color: $positive;
+}
+

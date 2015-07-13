@@ -17,23 +17,23 @@ export function timer($firebaseObject, $interval) {
 
     timerSync.secondsLeft = secondsLeft;
     timerSync.length = secondsLeft;
-    timerSync.pause = false;
+    timerSync.paused = false;
 
     var timer = {
       get secondsLeft() { return timerSync.secondsLeft; },
       get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
       get length() { return timerSync.length; },
-      get pause() { return timerSync.pause; },
+      get paused() { return timerSync.paused; },
 
       stop() {
-        timerSync.pause = true;
+        timerSync.paused = true;
         timerSync.$save();
 
         $interval.cancel(timer.tick);
       },
 
       start() {
-        timerSync.pause = false;
+        timerSync.paused = false;
         timerSync.$save();
 
         if (timerSync.secondsLeft <= 0) { return; }
