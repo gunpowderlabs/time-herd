@@ -4,7 +4,7 @@ describe("Timer", () => {
   beforeEach(module('starter'));
 
   it("newly created timer is running", inject(timer => {
-    expect(timer().secondsLeft).toEqual(10);
+    expect(timer().secondsLeft).toEqual(25*60);
     expect(timer().pause).toEqual(false);
   }));
 

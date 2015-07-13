@@ -21,6 +21,9 @@ module.exports = function(config) {
       'www/lib/angular-mocks/angular-mocks.js',
       'www/lib/firebase/firebase.js',
       'www/lib/angularfire/dist/angularfire.js',
+      'www/lib/angular-svg-round-progressbar/build/roundProgress.js',
+      'www/lib/sugarjs/release/sugar-full.development.js',
+
       'spec/main.js'
     ],
 

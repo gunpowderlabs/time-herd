@@ -11,15 +11,18 @@ export class TimerController {
 }
 
 export function timer($firebaseObject, $interval) {
-  return function(secondsLeft = 10) {
+  return function(secondsLeft = 25*60) {
     var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
     var timerSync = $firebaseObject(ref);
 
     timerSync.secondsLeft = secondsLeft;
+    timerSync.length = secondsLeft;
     timerSync.pause = false;
 
     var timer = {
       get secondsLeft() { return timerSync.secondsLeft; },
+      get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
+      get length() { return timerSync.length; },
       get pause() { return timerSync.pause; },
 
       stop() {

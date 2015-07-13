@@ -1,10 +1,5 @@
 ion-content ng-controller="TimerController as timer"
-  div ng-hide="timer.timer.pause"
-    | {{timer.timer.secondsLeft}}
-    button.button.button-clear.button-positive on-tap="timer.stop()" 
-      | Stop
-
-  div ng-show="timer.timer.pause"
-    input ng-model="timer.timer.secondsLeft" type="number"
-    button.button.button-clear.button-positive on-tap="timer.start()" 
-      | Start
+  .position-relative.center-text.full-width.margin-top-xxl
+    .position-absolute.counter.full-width
+      | {{timer.timer.secondsLeft | duration}}
+    round-progress max="timer.timer.length" current="timer.timer.secondsPassed" color="#45ccce" bgcolor="#eaeaea" radius="100" stroke="10" rounded="true" iterations="50" animation="easeInOutQuart"

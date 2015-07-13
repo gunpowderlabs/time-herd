@@ -21,3 +21,28 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.position-relative {
+  position: absolute;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.counter {
+  height: 100%;
+  line-height: 200px;
+  font-size: 35px;
+}
+
+.margin-top-xxl {
+  margin-top: 50px;
+}
