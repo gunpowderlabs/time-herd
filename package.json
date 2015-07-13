@@ -38,6 +38,6 @@
   ],
   "scripts": {
     "install": "./node_modules/bower/bin/bower install",
-    "test": "./node_modules/karma/bin/karma run"
+    "test": "./node_modules/karma/bin/karma start --single-run"
   }
 }
