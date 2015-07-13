@@ -35,5 +35,8 @@
   ],
   "cordovaPlatforms": [
     "ios"
-  ]
+  ],
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma run"
+  }
 }
