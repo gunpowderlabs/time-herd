@@ -2,7 +2,7 @@ import * as timers from './timers';
 import {duration} from './filters';
 
 var app = angular.module('starter', ['ionic', 'firebase', 'angular-svg-round-progress',
-    'ng-autofocus']);
+    'ng-autofocus', 'ngAudio']);
 
 app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);

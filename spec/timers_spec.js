@@ -43,4 +43,26 @@ describe("Timer", () => {
 
     expect(t.secondsLeft).toEqual(5);
   }));
+
+  it("fires onFinish callback when countdown completes", inject((timer, $interval) => {
+    var t = timer(5).start();
+    var finishSpy = jasmine.createSpy();
+    t.onFinish(finishSpy);
+
+    $interval.flush(5000);
+
+    expect(finishSpy).toHaveBeenCalled();
+  }));
+
+  it("it doesn't fire onFinish callback when countdown isn't completed", inject((timer, $interval) => {
+    var t = timer(5).start();
+    var finishSpy = jasmine.createSpy();
+    t.onFinish(finishSpy);
+
+    $interval.flush(4000);
+
+    expect(finishSpy).not.toHaveBeenCalled();
+  }));
+
+
 });

@@ -11,7 +11,8 @@
     "angularfire": "~1.1.2",
     "angular-svg-round-progressbar": "~0.2.10",
     "sugarjs": "~1.4.1",
-    "ng-autofocus": "~0.0.1"
+    "ng-autofocus": "~0.0.1",
+    "ngAudio": "~1.7.0"
   },
   "resolutions": {
     "angular": "1.3.13"

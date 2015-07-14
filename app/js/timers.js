@@ -1,6 +1,9 @@
 export class TimerController {
-  constructor(timer) {
+  constructor(timer, ngAudio) {
     this.timer = timer();
+    this.alarm = ngAudio.load("sounds/alarm.mp3");
+    this.alarm.loop = true;
+    this.timer.onFinish(() => this.alarm.play());
     this.length = this.timer.length;
   }
   stop() {
@@ -43,6 +46,14 @@ export function timer($firebaseObject, $interval) {
         timerSync.$save();
       },
 
+      onFinish(callback) {
+        this.callback = callback
+      },
+
+      runFinishCallback() {
+        (this.callback || angular.noop)();
+      },
+
       stop() {
         timerSync.paused = true;
         timerSync.$save();
@@ -59,6 +70,8 @@ export function timer($firebaseObject, $interval) {
         timer.tick = $interval(() => {
           timerSync.secondsLeft -= 1
           timerSync.$save();
+
+          if (timerSync.secondsLeft === 0) { this.runFinishCallback(); }
         }, 1000, timerSync.secondsLeft);
         return this;
       }

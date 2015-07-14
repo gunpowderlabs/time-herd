@@ -24,6 +24,7 @@ module.exports = function(config) {
       'www/lib/angular-svg-round-progressbar/build/roundProgress.js',
       'www/lib/sugarjs/release/sugar-full.development.js',
       'www/lib/ng-autofocus/dist/ng-autofocus.js',
+      'www/lib/ngAudio/app/angular.audio.js',
 
       'spec/main.js'
     ],
