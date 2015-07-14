@@ -3,8 +3,9 @@ ion-content ng-controller="TimerController as timer"
     .position-absolute.counter.full-width
       span on-tap="timer.edit()" ng-hide="timer.underEdition"
         | {{timer.timer.secondsLeft | duration}}
-      div.edit-timer ng-show="timer.underEdition"
-        input.center-text.display-inline-block ng-model="timer.length" type="tel"
+      div.edit-timer ng-if="timer.underEdition"
+        input.center-text.display-inline-block(ng-model="timer.length" type="tel" autofocus)
+
         .row.controls
            .col
               i.icon.ion-close on-tap="timer.closeEditForm()"

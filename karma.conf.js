@@ -23,6 +23,7 @@ module.exports = function(config) {
       'www/lib/angularfire/dist/angularfire.js',
       'www/lib/angular-svg-round-progressbar/build/roundProgress.js',
       'www/lib/sugarjs/release/sugar-full.development.js',
+      'www/lib/ng-autofocus/dist/ng-autofocus.js',
 
       'spec/main.js'
     ],
