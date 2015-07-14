@@ -6,13 +6,16 @@ export class TimerController {
     this.timer.onFinish(() => this.alarm.play());
     this.length = this.timer.length;
   }
-  stop() {
+  pause() {
     this.timer.stop();
   }
   start() {
     this.timer.start();
   }
-
+  stop() {
+    this.alarm.stop();
+    this.timer.reset();
+  }
   edit() {
     this.length = this.timer.length;
     this.underEdition = true;
@@ -37,7 +40,7 @@ export function timer($firebaseObject, $interval) {
     var timer = {
       get secondsLeft() { return timerSync.secondsLeft; },
       get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
-      get paused() { return timerSync.paused; },
+      get status() { return timerSync.status; },
       get length() { return timerSync.length; },
       set length(length) {
         this.stop();
@@ -55,7 +58,7 @@ export function timer($firebaseObject, $interval) {
       },
 
       stop() {
-        timerSync.paused = true;
+        timerSync.status = 'paused';
         timerSync.$save();
 
         $interval.cancel(timer.tick);
@@ -63,17 +66,24 @@ export function timer($firebaseObject, $interval) {
       },
 
       start() {
-        timerSync.paused = false;
+        timerSync.status = 'running';
         timerSync.$save();
 
         if (timerSync.secondsLeft <= 0) { return; }
         timer.tick = $interval(() => {
           timerSync.secondsLeft -= 1
-          timerSync.$save();
 
-          if (timerSync.secondsLeft === 0) { this.runFinishCallback(); }
+          if (timerSync.secondsLeft === 0) {
+            timerSync.status = 'finished';
+            this.runFinishCallback();
+          }
+          timerSync.$save();
         }, 1000, timerSync.secondsLeft);
         return this;
+      },
+
+      reset() {
+        this.length = this.length;
       }
     }
 

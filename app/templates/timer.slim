@@ -16,8 +16,9 @@ ion-content ng-controller="TimerController as timer"
     .row.height-3x
       .col.font-2x.color-assertive
         i.icon.ion-trash-b
-      .col.font-3x
-        i.icon.ion-pause on-tap="timer.stop()" ng-hide="timer.timer.paused"
-        i.icon.ion-play on-tap="timer.start()" ng-show="timer.timer.paused"
+      .col.font-3x ng-switch="timer.timer.status"
+        i.icon.ion-pause on-tap="timer.pause()" ng-switch-when="running"
+        i.icon.ion-play on-tap="timer.start()" ng-switch-when="paused"
+        i.icon.ion-stop on-tap="timer.stop()" ng-switch-when="finished"
       .col.font-2x
         i.icon.ion-person-add

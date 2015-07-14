@@ -5,6 +5,10 @@ describe("duration", () => {
   var duration;
   beforeEach(inject($filter => duration = $filter('duration')));
 
+  it("returns 0 for 0", () => {
+    expect(duration(0)).toEqual("0");
+  });
+
   it("returns itself for numbers less than 60", () => {
     expect(duration(10)).toEqual("10");
   });

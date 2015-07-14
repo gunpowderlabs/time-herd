@@ -1,5 +1,6 @@
 export function duration() {
   return function(seconds) {
+    if (seconds === 0) { return '0'; }
     var components = [];
     while (seconds / 60 > 0) {
       components.push(seconds % 60);
