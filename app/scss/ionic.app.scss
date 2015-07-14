@@ -42,6 +42,23 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-size: 35px;
 }
 
+.edit-timer {
+  line-height: 1em;
+  margin-top: 78px;
+
+  input {
+    display: inline-block;
+    font-size: 35px;
+    width: 170px;
+    height: 42px;
+  }
+  .controls {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .margin-top-xxl {
   margin-top: 50px;
 }

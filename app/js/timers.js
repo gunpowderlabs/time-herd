@@ -1,11 +1,27 @@
 export class TimerController {
-  constructor($scope, timer) {
-    this.timer = timer()
+  constructor(timer) {
+    this.timer = timer();
+    this.length = this.timer.length;
   }
   stop() {
     this.timer.stop();
   }
   start() {
+    this.timer.start();
+  }
+
+  edit() {
+    this.length = this.timer.length;
+    this.underEdition = true;
+  }
+
+  closeEditForm() {
+    this.underEdition = false;
+  }
+
+  updateTimer() {
+    this.timer.length = this.length;
+    this.underEdition = false;
     this.timer.start();
   }
 }
@@ -15,21 +31,24 @@ export function timer($firebaseObject, $interval) {
     var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
     var timerSync = $firebaseObject(ref);
 
-    timerSync.secondsLeft = secondsLeft;
-    timerSync.length = secondsLeft;
-    timerSync.paused = false;
-
     var timer = {
       get secondsLeft() { return timerSync.secondsLeft; },
       get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
-      get length() { return timerSync.length; },
       get paused() { return timerSync.paused; },
+      get length() { return timerSync.length; },
+      set length(length) {
+        this.stop();
+        timerSync.length = length;
+        timerSync.secondsLeft = length;
+        timerSync.$save();
+      },
 
       stop() {
         timerSync.paused = true;
         timerSync.$save();
 
         $interval.cancel(timer.tick);
+        return this;
       },
 
       start() {
@@ -41,10 +60,11 @@ export function timer($firebaseObject, $interval) {
           timerSync.secondsLeft -= 1
           timerSync.$save();
         }, 1000, timerSync.secondsLeft);
+        return this;
       }
     }
 
-    timer.start();
+    timer.length = secondsLeft;
 
     return timer;
   };
