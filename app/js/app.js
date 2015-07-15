@@ -1,5 +1,6 @@
 import * as timers from './timers';
 import {duration} from './filters';
+import $cordovaShake from './shake';
 
 var app = angular.module('starter', ['ionic', 'firebase', 'angular-svg-round-progress',
     'ng-autofocus', 'ngAudio']);
@@ -7,6 +8,7 @@ var app = angular.module('starter', ['ionic', 'firebase', 'angular-svg-round-pro
 app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);
 app.filter('duration', duration);
+app.factory('$cordovaShake', $cordovaShake);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

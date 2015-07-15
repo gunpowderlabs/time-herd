@@ -1,18 +1,14 @@
 export class TimerController {
-  constructor(timer, ngAudio, $ionicPlatform) {
+  constructor(timer, ngAudio, $ionicPlatform, $cordovaShake) {
     this.timer = timer();
     this.alarm = ngAudio.load("sounds/alarm.mp3");
     this.alarm.loop = true;
     this.timer.onFinish(() => this.alarm.play());
     this.length = this.timer.length;
 
-    $ionicPlatform.ready().then(() => {
-      if (typeof shake !== 'undefined') {
-        shake.startWatch(() => {
-          if(this.timer.status === 'finished') { this.stop(); }
-        }, 20);
-      }
-    });
+    $cordovaShake.watch(() => {
+      if(this.timer.status === 'finished') { this.stop(); }
+    }, 20);
   }
   pause() {
     this.timer.stop();
