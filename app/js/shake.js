@@ -1,9 +1,9 @@
-export default function $cordovaShake($ionicPlatform) {
+export default function $cordovaShake($ionicPlatform, $timeout) {
   return {
     watch(callback, threshold) {
       $ionicPlatform.ready().then(() => {
         if (typeof shake !== 'undefined') {
-          shake.startWatch(callback, threshold);
+          shake.startWatch(() => $timeout(callback), threshold);
         }
       });
     }
