@@ -1,25 +1,36 @@
 export class TimerController {
-  constructor(timer, ngAudio, $ionicPlatform, $cordovaShake) {
-    this.timer = timer();
+  constructor(timer, ngAudio, $ionicPlatform, $cordovaShake, $cordovaSocialSharing) {
+    this.$cordovaSocialSharing = $cordovaSocialSharing;
+
     this.alarm = ngAudio.load("sounds/alarm.mp3");
     this.alarm.loop = true;
+
+    this.timer = timer();
     this.timer.onFinish(() => this.alarm.play());
-    this.length = this.timer.length;
 
     $cordovaShake.watch(() => {
       if(this.timer.status === 'finished') { this.stop(); }
     }, 20);
   }
+
+  share() {
+    this.$cordovaSocialSharing.share(undefined, "Share a timer with me at TimeHerd",
+      undefined, "https://gunpowderlabs.com");
+  }
+
   pause() {
     this.timer.stop();
   }
+
   start() {
     this.timer.start();
   }
+
   stop() {
     this.alarm.stop();
     this.timer.reset();
   }
+
   edit() {
     this.length = this.timer.length;
     this.underEdition = true;

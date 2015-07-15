@@ -21,4 +21,4 @@ ion-content ng-controller="TimerController as timer"
         i.icon.ion-play on-tap="timer.start()" ng-switch-when="paused"
         i.icon.ion-stop on-tap="timer.stop()" ng-switch-when="finished"
       .col.font-2x
-        i.icon.ion-person-add
+        i.icon.ion-person-add on-tap="timer.share()"

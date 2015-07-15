@@ -3,7 +3,7 @@ import {duration} from './filters';
 import $cordovaShake from './shake';
 
 var app = angular.module('starter', ['ionic', 'firebase', 'angular-svg-round-progress',
-    'ng-autofocus', 'ngAudio']);
+    'ng-autofocus', 'ngAudio', 'ngCordova.plugins']);
 
 app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);
