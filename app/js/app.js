@@ -18,6 +18,9 @@ app.run(function($ionicPlatform) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+    window.plugins.webintent.getUri(function(uri) {
+      console.log(uri);
+    }
   });
 })
 

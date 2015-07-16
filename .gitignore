@@ -9,3 +9,4 @@ www/js
 www/css
 www/templates
 www/lib
+.DS_Store
