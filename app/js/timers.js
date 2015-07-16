@@ -15,7 +15,7 @@ export class TimerController {
 
   share() {
     this.$cordovaSocialSharing.share(undefined, "Share a timer with me at TimeHerd",
-      undefined, "https://gunpowderlabs.com");
+      undefined, "https://timeherd.divshot.io");
   }
 
   pause() {
