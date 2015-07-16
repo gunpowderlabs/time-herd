@@ -10,6 +10,10 @@ app.factory('timer', timers.timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
 
+window.handleOpenURL = function(url) {
+  console.log(url);
+}
+
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
