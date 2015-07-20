@@ -11,7 +11,9 @@ app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
 
 window.handleOpenURL = function(url) {
-  console.log(url);
+  app.run(function() {
+    console.log(url);
+  });
 }
 
 app.run(function($ionicPlatform) {
@@ -21,11 +23,6 @@ app.run(function($ionicPlatform) {
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
-    }
-    if(window.plugins) {
-      window.plugins.webintent.getUri(function(uri) {
-        console.log(uri);
-      });
     }
   });
 })
