@@ -4,12 +4,12 @@ describe("Timer", () => {
   beforeEach(module('starter'));
 
   it("newly created timer is paused", inject(timer => {
-    expect(timer().secondsLeft).toEqual(25*60);
-    expect(timer().status).toEqual('paused');
+    expect(timer({}).secondsLeft).toEqual(25*60);
+    expect(timer({}).status).toEqual('paused');
   }));
 
   it("counts down the timer", inject((timer, $interval) => {
-    var t = timer(100).start();
+    var t = timer({secondsLeft: 100}).start();
 
     $interval.flush(5000);
 
@@ -17,7 +17,7 @@ describe("Timer", () => {
   }));
 
   it("doesn't go below zero", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
 
     $interval.flush(10000);
 
@@ -25,7 +25,7 @@ describe("Timer", () => {
   }));
 
   it("resets when length is changed", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
     t.length = 4;
 
     $interval.flush(10000);
@@ -36,7 +36,7 @@ describe("Timer", () => {
   }));
 
   it("doesn't count down if timer is paused", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
     t.stop();
 
     $interval.flush(10000);
@@ -45,7 +45,7 @@ describe("Timer", () => {
   }));
 
   it("fires onFinish callback when countdown completes", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
     var finishSpy = jasmine.createSpy();
     t.onFinish(finishSpy);
 
@@ -56,7 +56,7 @@ describe("Timer", () => {
   }));
 
   it("it doesn't fire onFinish callback when countdown isn't completed", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
     var finishSpy = jasmine.createSpy();
     t.onFinish(finishSpy);
 
@@ -67,7 +67,7 @@ describe("Timer", () => {
   }));
 
   it("resets the timer", inject((timer, $interval) => {
-    var t = timer(5).start();
+    var t = timer({secondsLeft: 5}).start();
     $interval.flush(1000);
     t.reset();
 
