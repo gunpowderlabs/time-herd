@@ -17,6 +17,46 @@ var paths = {
   sass: ['./app/scss/**/*.scss'],
 };
 
+function libraries() {
+  return {
+    ionic: "www/lib/ionic/js/ionic.bundle",
+    "ng-cordova": "www/lib/ngCordova/dist/ng-cordova",
+    uri: "www/lib/uri.js/src/URI",
+    chance: "www/lib/chance/chance",
+    firebase: "www/lib/firebase/firebase",
+    angularfire: "www/lib/angularfire/dist/angularfire",
+    "angular-svg-round-progressbar": "www/lib/angular-svg-round-progressbar/build/roundProgress",
+    sugarjs: "www/lib/sugarjs/release/sugar-full.development",
+    "ng-autofocus": "www/lib/ng-autofocus/dist/ng-autofocus",
+    "ng-audio": "www/lib/ngAudio/app/angular.audio",
+    almond: "www/lib/almond/almond",
+  }
+}
+
+var shims = {
+  ionic: {
+    exports: "angular.module('ionic')",
+  },
+  angularfire: {
+    exports: "angular.module('firebase')",
+  },
+  firebase: {
+    exports: "Firebase",
+  },
+  'angular-svg-round-progressbar': {
+    exports: "angular.module('angular-svg-round-progress')",
+  },
+  'ng-autofocus': {
+    exports: "angular.module('ng-autofocus')",
+  },
+  'ng-audio': {
+    exports: "angular.module('ngAudio')",
+  },
+  'ng-cordova': {
+    exports: "angular.module('ngCordova')",
+  },
+};
+
 gulp.task('build', ['sass', 'js', 'html']);
 
 gulp.task('default', ['build']);
@@ -24,7 +64,7 @@ gulp.task('default', ['build']);
 gulp.task('js', function(done) {
   gulp.src(paths.js)
     .pipe(babel({modules: 'amd'}))
-    .pipe(amdOptimize('app', {}))
+    .pipe(amdOptimize('app', {paths: libraries(), shim: shims}))
     .pipe(concat('main.js'))
     .pipe(gulp.dest('./www/js/'))
     .on('end', done);

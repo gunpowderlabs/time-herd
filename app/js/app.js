@@ -1,9 +1,18 @@
+import "almond";
+import "sugarjs";
+import ionic from "ionic";
+import ngCordova from "ng-cordova"
+import angularfire from "angularfire"
+import angularSVGRoundProgress from "angular-svg-round-progressbar";
+import ngAutofocus from "ng-autofocus";
+import ngAudio from "ng-audio";
+
 import * as timers from './timers';
 import {duration} from './filters';
 import $cordovaShake from './shake';
 
-var app = angular.module('starter', ['ionic', 'firebase', 'angular-svg-round-progress',
-    'ng-autofocus', 'ngAudio', 'ngCordova.plugins']);
+var app = angular.module('starter', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
+    ngAutofocus.name, ngAudio.name, ngCordova.name]);
 
 app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);

@@ -1,3 +1,6 @@
+import Chance from "chance";
+import Firebase from "firebase";
+
 export class TimerController {
   constructor(currentTimer, ngAudio, $ionicPlatform, $cordovaShake, $cordovaSocialSharing) {
     this.$cordovaSocialSharing = $cordovaSocialSharing;
@@ -49,7 +52,7 @@ export class TimerController {
 
 export function currentTimer(timer, $firebaseObject) {
   var timerInstance;
-  function firebaseTimer(timerId = chance.hash()) {
+  function firebaseTimer(timerId = Chance().hash()) {
     var timersRef = new Firebase("https://shining-heat-7954.firebaseio.com/timers");
     return $firebaseObject(timersRef.child(timerId));
   }
