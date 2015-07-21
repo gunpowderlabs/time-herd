@@ -65,7 +65,7 @@ gulp.task('js', function(done) {
   gulp.src(paths.js)
     .pipe(babel({modules: 'amd'}))
     .pipe(amdOptimize('app', {paths: libraries(), shim: shims}))
-    .pipe(concat('main.js'))
+    .pipe(concat('app.js'))
     .pipe(gulp.dest('./www/js/'))
     .on('end', done);
 });
