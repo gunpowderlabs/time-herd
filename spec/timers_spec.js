@@ -8,6 +8,11 @@ describe("Timer", () => {
     expect(timer({}).status).toEqual('paused');
   }));
 
+  it("returns the timer id", inject(timer => {
+    var t = timer({timerSync: {$id: "foo", $save: angular.noop}});
+    expect(t.id).toEqual('foo');
+  }));
+
   it("counts down the timer", inject((timer, $interval) => {
     var t = timer({secondsLeft: 100}).start();
 

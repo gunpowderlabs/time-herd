@@ -9,11 +9,10 @@ app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
+app.factory('currentTimer', timers.currentTimer);
 
 window.handleOpenURL = function(url) {
-  app.run(function() {
-    console.log(url);
-  });
+  console.log(url);
 }
 
 app.run(function($ionicPlatform) {

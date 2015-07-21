@@ -12,7 +12,9 @@
     "angular-svg-round-progressbar": "~0.2.10",
     "sugarjs": "~1.4.1",
     "ng-autofocus": "~0.0.1",
-    "ngAudio": "~1.7.0"
+    "ngAudio": "~1.7.0",
+    "uri.js": "~1.15.2",
+    "chance": "~0.7.6"
   },
   "resolutions": {
     "angular": "1.3.13"

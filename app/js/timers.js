@@ -1,38 +1,38 @@
 export class TimerController {
-  constructor(timer, ngAudio, $ionicPlatform, $cordovaShake, $cordovaSocialSharing) {
+  constructor(currentTimer, ngAudio, $ionicPlatform, $cordovaShake, $cordovaSocialSharing) {
     this.$cordovaSocialSharing = $cordovaSocialSharing;
 
     this.alarm = ngAudio.load("sounds/alarm.mp3");
     this.alarm.loop = true;
 
-    this.timer = timer();
-    this.timer.onFinish(() => this.alarm.play());
+    this.timer = currentTimer;
+    this.timer().onFinish(() => this.alarm.play());
 
     $cordovaShake.watch(() => {
-      if(this.timer.status === 'finished') { this.stop(); }
+      if(this.timer().status === 'finished') { this.stop(); }
     }, 20);
   }
 
   share() {
     this.$cordovaSocialSharing.share(undefined, "Share a timer with me at TimeHerd",
-      undefined, "https://timeherd.divshot.io");
+      undefined, `https://timeherd.divshot.io/${this.timer().id}`);
   }
 
   pause() {
-    this.timer.stop();
+    this.timer().stop();
   }
 
   start() {
-    this.timer.start();
+    this.timer().start();
   }
 
   stop() {
     this.alarm.stop();
-    this.timer.reset();
+    this.timer().reset();
   }
 
   edit() {
-    this.length = this.timer.length;
+    this.length = this.timer().length;
     this.underEdition = true;
   }
 
@@ -41,18 +41,35 @@ export class TimerController {
   }
 
   updateTimer() {
-    this.timer.length = this.length;
+    this.timer().length = this.length;
     this.underEdition = false;
-    this.timer.start();
+    this.timer().start();
   }
 }
 
-export function timer($firebaseObject, $interval) {
-  return function({secondsLeft = 25*60}) {
-    var ref = new Firebase("https://shining-heat-7954.firebaseio.com/timer");
-    var timerSync = $firebaseObject(ref);
+export function currentTimer(timer, $firebaseObject) {
+  var timerInstance;
+  function firebaseTimer(timerId = chance.hash()) {
+    var timersRef = new Firebase("https://shining-heat-7954.firebaseio.com/timers");
+    return $firebaseObject(timersRef.child(timerId));
+  }
+  function currentTimer() {
+    timerInstance = timerInstance || timer({timerSync: firebaseTimer()});
+    return timerInstance;
+  }
 
+  currentTimer.open = function(timerId) {
+    console.log(timerId);
+    timerInstance = timer({timerSync: firebaseTimer(timerId)});
+  }
+
+  return currentTimer;
+}
+
+export function timer($interval) {
+  return function({secondsLeft = 25*60, timerSync = {$save: angular.noop}}) {
     var timer = {
+      get id() { return timerSync.$id },
       get secondsLeft() { return timerSync.secondsLeft; },
       get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
       get status() { return timerSync.status; },
