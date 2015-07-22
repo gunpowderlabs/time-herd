@@ -1,4 +1,5 @@
-import * as app from '../app';
+import "./app";
+import "angular-mocks";
 
 describe("Timer", () => {
   beforeEach(module('starter'));

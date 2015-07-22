@@ -10,49 +10,21 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'app/js/**/*.js', included: false},
-      {pattern: 'spec/**/*spec.js', included: false},
-      'www/lib/ionic/js/ionic.bundle.js',
-      'www/lib/ngCordova/dist/ng-cordova.js',
-      'www/lib/angular-mocks/angular-mocks.js',
-      'www/lib/firebase/firebase.js',
-      'www/lib/angularfire/dist/angularfire.js',
-      'www/lib/angular-svg-round-progressbar/build/roundProgress.js',
-      'www/lib/sugarjs/release/sugar-full.development.js',
-      'www/lib/ng-autofocus/dist/ng-autofocus.js',
-      'www/lib/ngAudio/app/angular.audio.js',
-
-      'spec/main.js'
+      'www/lib/almond/almond.js',
+      'www/js/app.js',
+      'tmp/specs.js',
+      'spec/runner.js'
     ],
 
 
     // list of files to exclude
     exclude: [
     ],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      'app/js/**/*.js': ['babel'],
-      'spec/**/!(main).js': ['babel'],
-    },
-
-    babelPreprocessor: {
-      options: {
-        modules: 'amd',
-        sourceMap: 'inline'
-      },
-      filename: function (file) {
-        return file.originalPath.replace('/app/js', '');
-      },
-    },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

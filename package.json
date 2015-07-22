@@ -19,15 +19,13 @@
     "gulp-util": "^2.2.14",
     "jasmine-core": "^2.3.4",
     "karma": "^0.12.37",
-    "karma-babel-preprocessor": "^5.2.1",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.0",
-    "karma-requirejs": "^0.2.2",
-    "lodash": "^3.10.0",
+    "merge-stream": "^0.1.8",
     "phantomjs": "^1.9.17",
     "plist": "^1.1.0",
-    "requirejs": "^2.1.19",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "through2": "^2.0.0"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
@@ -50,6 +48,6 @@
   ],
   "scripts": {
     "install": "./node_modules/bower/bin/bower install",
-    "test": "./node_modules/karma/bin/karma start --single-run"
+    "test": "./node_modules/gulp/bin/gulp.js js js-spec && ./node_modules/karma/bin/karma start --single-run"
   }
 }

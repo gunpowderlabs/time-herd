@@ -10,9 +10,12 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var amdOptimize = require('amd-optimize');
+var through = require("through2");
+var merge = require("merge-stream");
 
 var paths = {
   js: ['./app/js/**/*.js'],
+  spec: ['./spec/**/*_spec.js'],
   html: ['./app/templates/**/*.slim'],
   sass: ['./app/scss/**/*.scss'],
 };
@@ -30,12 +33,17 @@ function libraries() {
     "ng-autofocus": "www/lib/ng-autofocus/dist/ng-autofocus",
     "ng-audio": "www/lib/ngAudio/app/angular.audio",
     almond: "www/lib/almond/almond",
+    "angular-mocks": "www/lib/angular-mocks/angular-mocks",
+    app: "empty:",
   }
 }
 
 var shims = {
   ionic: {
     exports: "angular.module('ionic')",
+  },
+  "angular-mocks": {
+    deps: ['ionic'],
   },
   angularfire: {
     exports: "angular.module('firebase')",
@@ -70,6 +78,29 @@ gulp.task('js', function(done) {
     .on('end', done);
 });
 
+function gatherModuleNames() {
+  return through.obj(function(file, encoding, done) {
+    if (file.isBuffer()) {
+      var moduleName = file.relative.replace(/\.js$/, '');
+      file.contents = new Buffer("import '" + moduleName + "';");
+    }
+    done(null, file);
+  });
+}
+
+gulp.task('js-spec', function(done) {
+  var specModules = gulp.src(paths.spec)
+    .pipe(gatherModuleNames())
+    .pipe(concat("specs"));
+
+  merge(gulp.src(paths.spec), specModules)
+    .pipe(babel({modules: "amd"}))
+    .pipe(amdOptimize("specs", {paths: libraries(), shim: shims}))
+    .pipe(concat("specs.js"))
+    .pipe(gulp.dest("./tmp"))
+    .on("end", done);
+});
+
 gulp.task('html', function(done) {
   gulp.src(paths.html)
     .pipe(slm())
@@ -94,6 +125,7 @@ gulp.task('sass', function(done) {
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
   gulp.watch(paths.js, ['js']);
+  gulp.watch(paths.spec, ['js-spec']);
   gulp.watch(paths.html, ['html']);
 });
 
