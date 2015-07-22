@@ -34,7 +34,6 @@ function libraries() {
     "ng-audio": "www/lib/ngAudio/app/angular.audio",
     almond: "www/lib/almond/almond",
     "angular-mocks": "www/lib/angular-mocks/angular-mocks",
-    app: "empty:",
   }
 }
 
@@ -89,13 +88,15 @@ function gatherModuleNames() {
 }
 
 gulp.task('js-spec', function(done) {
+  var specLibraries = libraries();
+  specLibraries.app = "empty:";
   var specModules = gulp.src(paths.spec)
     .pipe(gatherModuleNames())
     .pipe(concat("specs"));
 
   merge(gulp.src(paths.spec), specModules)
     .pipe(babel({modules: "amd"}))
-    .pipe(amdOptimize("specs", {paths: libraries(), shim: shims}))
+    .pipe(amdOptimize("specs", {paths: specLibraries, shim: shims}))
     .pipe(concat("specs.js"))
     .pipe(gulp.dest("./tmp"))
     .on("end", done);
