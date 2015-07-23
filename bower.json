@@ -14,7 +14,8 @@
     "ng-autofocus": "~0.0.1",
     "ngAudio": "~1.7.0",
     "uri.js": "~1.15.2",
-    "chance": "~0.7.6"
+    "chance": "~0.7.6",
+    "bacon": "~0.7.70"
   },
   "resolutions": {
     "angular": "1.3.13"

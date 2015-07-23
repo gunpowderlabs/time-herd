@@ -6,10 +6,16 @@ import angularfire from "angularfire"
 import angularSVGRoundProgress from "angular-svg-round-progressbar";
 import ngAutofocus from "ng-autofocus";
 import ngAudio from "ng-audio";
+import Bacon from "bacon";
 
 import * as timers from './timers';
 import {duration} from './filters';
 import $cordovaShake from './shake';
+
+var openURLStream = new Bacon.fromBinder(sink => {
+  window.handleOpenURL = sink;
+  return angular.noop;
+});
 
 var app = angular.module('starter', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
     ngAutofocus.name, ngAudio.name, ngCordova.name]);
@@ -19,10 +25,7 @@ app.factory('timer', timers.timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
 app.factory('currentTimer', timers.currentTimer);
-
-window.handleOpenURL = function(url) {
-  console.log(url);
-}
+app.value('openURLStream', openURLStream);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

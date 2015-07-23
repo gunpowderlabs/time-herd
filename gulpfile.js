@@ -34,6 +34,7 @@ function libraries() {
     "ng-audio": "www/lib/ngAudio/app/angular.audio",
     almond: "www/lib/almond/almond",
     "angular-mocks": "www/lib/angular-mocks/angular-mocks",
+    bacon: "www/lib/bacon/dist/Bacon",
   }
 }
 

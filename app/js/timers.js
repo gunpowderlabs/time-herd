@@ -50,7 +50,7 @@ export class TimerController {
   }
 }
 
-export function currentTimer(timer, $firebaseObject) {
+export function currentTimer(timer, $firebaseObject, openURLStream) {
   var timerInstance;
   function firebaseTimer(timerId = Chance().hash()) {
     var timersRef = new Firebase("https://shining-heat-7954.firebaseio.com/timers");
