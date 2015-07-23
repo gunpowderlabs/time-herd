@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var bower = require('bower');
 var concat = require('gulp-concat');
+var concatSourcemap = require('gulp-concat-sourcemap');
 var sass = require('gulp-sass');
 var babel = require('gulp-babel');
 var slm = require('gulp-slm');
@@ -73,9 +74,11 @@ gulp.task('default', ['build']);
 
 gulp.task('js', function(done) {
   gulp.src(paths.js)
+    .pipe(sourcemaps.init())
     .pipe(babel({modules: 'amd'}))
     .pipe(amdOptimize('app', {paths: libraries(), shim: shims}))
-    .pipe(concat('app.js'))
+    .pipe(concatSourcemap('app.js'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./www/js/'))
     .on('end', done);
 });
@@ -98,9 +101,11 @@ gulp.task('js-spec', function(done) {
     .pipe(concat("specs"));
 
   merge(gulp.src(paths.spec), specModules)
+    .pipe(sourcemaps.init())
     .pipe(babel({modules: "amd"}))
     .pipe(amdOptimize("specs", {paths: specLibraries, shim: shims}))
-    .pipe(concat("specs.js"))
+    .pipe(concatSourcemap("specs.js"))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest("./tmp"))
     .on("end", done);
 });
