@@ -11,11 +11,10 @@ import Bacon from "bacon";
 import * as timers from './timers';
 import {duration} from './filters';
 import $cordovaShake from './shake';
+import timerIdStream from './timer_id_stream';
 
-var openURLStream = new Bacon.fromBinder(sink => {
-  window.handleOpenURL = sink;
-  return angular.noop;
-});
+var openURLStream = new Bacon.Bus();
+window.handleOpenURL = (url) => openURLStream.push(url)
 
 var app = angular.module('starter', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
     ngAutofocus.name, ngAudio.name, ngCordova.name]);
@@ -26,6 +25,7 @@ app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
 app.factory('currentTimer', timers.currentTimer);
 app.value('openURLStream', openURLStream);
+app.factory('timerIdStream', timerIdStream);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
