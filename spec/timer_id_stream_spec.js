@@ -2,7 +2,7 @@ import "spec_helper";
 
 describe("timerIdStream", () => {
   var spy;
-  beforeEach(module('starter'));
+  beforeEach(module('timeherd'));
   beforeEach(inject(timerIdStream => {
     spy = jasmine.createSpy();
     timerIdStream.onValue(spy);

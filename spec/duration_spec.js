@@ -1,7 +1,7 @@
 import "spec_helper";
 
 describe("duration", () => {
-  beforeEach(module('starter'));
+  beforeEach(module('timeherd'));
   var duration;
   beforeEach(inject($filter => duration = $filter('duration')));
 

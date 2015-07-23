@@ -16,7 +16,7 @@ import timerIdStream from './timer_id_stream';
 var openURLStream = new Bacon.Bus();
 window.handleOpenURL = (url) => openURLStream.push(url)
 
-var app = angular.module('starter', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
+var app = angular.module('timeherd', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
     ngAutofocus.name, ngAudio.name, ngCordova.name]);
 
 app.controller('TimerController', timers.TimerController);

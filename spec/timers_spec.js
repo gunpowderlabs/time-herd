@@ -1,7 +1,7 @@
 import "spec_helper";
 
 describe("Timer", () => {
-  beforeEach(module('starter'));
+  beforeEach(module('timeherd'));
 
   it("newly created timer is paused", inject(timer => {
     expect(timer({}).secondsLeft).toEqual(25*60);
