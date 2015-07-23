@@ -1,5 +1,4 @@
-import "./app";
-import "angular-mocks";
+import "spec_helper";
 
 describe("duration", () => {
   beforeEach(module('starter'));

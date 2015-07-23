@@ -15,7 +15,7 @@ var merge = require("merge-stream");
 
 var paths = {
   js: ['./app/js/**/*.js'],
-  spec: ['./spec/**/*_spec.js'],
+  spec: ['./spec/**/*.js'],
   html: ['./app/templates/**/*.slim'],
   sass: ['./app/scss/**/*.scss'],
 };
