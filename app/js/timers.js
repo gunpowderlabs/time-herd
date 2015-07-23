@@ -1,16 +1,23 @@
 export class TimerController {
-  constructor(currentTimer, ngAudio, $ionicPlatform, $cordovaShake, $cordovaSocialSharing) {
+  constructor(currentTimer, ngAudio, $cordovaShake, $cordovaSocialSharing, $cordovaLocalNotification, $rootScope) {
     this.$cordovaSocialSharing = $cordovaSocialSharing;
+    this.$cordovaLocalNotification = $cordovaLocalNotification;
 
     this.alarm = ngAudio.load("sounds/alarm.mp3");
     this.alarm.loop = true;
 
     this.timer = currentTimer;
-    this.timer().onFinish(() => this.alarm.play());
+    this.timer().onFinish(() => {
+      this.alarm.play();
+      $cordovaLocalNotification.schedule({
+        id: 0,
+        text: 'Time passed! Tap this notification to stop the alarm.',
+        sound: null
+      });
+    });
 
-    $cordovaShake.watch(() => {
-      if(this.timer().status === 'finished') { this.stop(); }
-    }, 20);
+    $rootScope.$on('$cordovaLocalNotification:click', () => this.stop());
+    $cordovaShake.watch(() => this.stop(), 20);
   }
 
   share() {
@@ -27,7 +34,9 @@ export class TimerController {
   }
 
   stop() {
+    if(this.timer().status !== 'finished') { return; }
     this.alarm.stop();
+    this.$cordovaLocalNotification.clear(0);
     this.timer().reset();
   }
 
