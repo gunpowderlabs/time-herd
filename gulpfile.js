@@ -12,6 +12,7 @@ var sh = require('shelljs');
 var amdOptimize = require('amd-optimize');
 var through = require("through2");
 var merge = require("merge-stream");
+var watch = require("gulp-watch");
 
 var paths = {
   js: ['./app/js/**/*.js'],
@@ -125,10 +126,10 @@ gulp.task('sass', function(done) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.js, ['js']);
-  gulp.watch(paths.spec, ['js-spec']);
-  gulp.watch(paths.html, ['html']);
+  watch(paths.sass, function() { gulp.start('sass') });
+  watch(paths.js, function() { gulp.start('js') });
+  watch(paths.spec, function() { gulp.start('js-spec') });
+  watch(paths.html, function() { gulp.start('html') });
 });
 
 gulp.task('install', ['git-check'], function() {
