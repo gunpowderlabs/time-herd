@@ -47,6 +47,7 @@ var shims = {
     deps: ['ionic'],
   },
   angularfire: {
+    deps: ['firebase'],
     exports: "angular.module('firebase')",
   },
   firebase: {
@@ -126,10 +127,10 @@ gulp.task('sass', function(done) {
 });
 
 gulp.task('watch', function() {
-  watch(paths.sass, function() { gulp.start('sass') });
-  watch(paths.js, function() { gulp.start('js') });
-  watch(paths.spec, function() { gulp.start('js-spec') });
-  watch(paths.html, function() { gulp.start('html') });
+  watch(paths.sass, {ignoreInitial: false}, function() { gulp.start('sass') });
+  watch(paths.js, {ignoreInitial: false}, function() { gulp.start('js') });
+  watch(paths.spec, {ignoreInitial: false}, function() { gulp.start('js-spec') });
+  watch(paths.html, {ignoreInitial: false}, function() { gulp.start('html') });
 });
 
 gulp.task('install', ['git-check'], function() {

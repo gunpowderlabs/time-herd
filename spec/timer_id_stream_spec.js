@@ -14,9 +14,9 @@ describe("timerIdStream", () => {
     expect(spy).toHaveBeenCalledWith("af23");
   }));
 
-  it("returns undefined for empty patahs", inject((openURLStream) => {
+  it("ignores empty ids", inject((openURLStream) => {
     openURLStream.push("https://timeherd.divshot.io/");
 
-    expect(spy).toHaveBeenCalledWith(undefined);
+    expect(spy).not.toHaveBeenCalled();
   }));
 });

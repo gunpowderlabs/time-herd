@@ -7,11 +7,13 @@ import angularSVGRoundProgress from "angular-svg-round-progressbar";
 import ngAutofocus from "ng-autofocus";
 import ngAudio from "ng-audio";
 import Bacon from "bacon";
+import Chance from "chance";
 
 import * as timers from './timers';
 import {duration} from './filters';
 import $cordovaShake from './shake';
 import timerIdStream from './timer_id_stream';
+import currentTimer from './current_timer';
 
 var openURLStream = new Bacon.Bus();
 window.handleOpenURL = (url) => openURLStream.push(url)
@@ -23,9 +25,10 @@ app.controller('TimerController', timers.TimerController);
 app.factory('timer', timers.timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
-app.factory('currentTimer', timers.currentTimer);
+app.factory('currentTimer', currentTimer);
 app.value('openURLStream', openURLStream);
 app.factory('timerIdStream', timerIdStream);
+app.value('chance', Chance());
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
