@@ -5,7 +5,7 @@ describe("timerIdStream", () => {
   beforeEach(module('timeherd'));
   beforeEach(inject(timerIdStream => {
     spy = jasmine.createSpy();
-    timerIdStream.onValue(spy);
+    timerIdStream.$onValue(spy);
   }));
 
   it("parses id from the url", inject(openURLStream => {

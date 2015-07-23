@@ -39,7 +39,15 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
-})
+});
+
+app.run(function($rootScope) {
+  Bacon.Observable.prototype.$onValue = function() {
+    const self = this;
+    const args = arguments;
+    $rootScope.$apply(() => Bacon.Observable.prototype.onValue.apply(self, args));
+  };
+});
 
 export function run() {
   angular.bootstrap(document, [app.name]);
