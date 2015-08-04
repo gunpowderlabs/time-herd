@@ -14,6 +14,7 @@ import {duration} from './filters';
 import $cordovaShake from './shake';
 import timerIdStream from './timer_id_stream';
 import currentTimer from './current_timer';
+import serverTime from './server_time';
 
 var openURLStream = new Bacon.Bus();
 window.handleOpenURL = (url) => openURLStream.push(url)
@@ -29,6 +30,7 @@ app.factory('currentTimer', currentTimer);
 app.value('openURLStream', openURLStream);
 app.factory('timerIdStream', timerIdStream);
 app.value('chance', Chance());
+app.factory('serverTime', serverTime);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
