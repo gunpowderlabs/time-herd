@@ -1,0 +1,14 @@
+div
+  .position-absolute.counter.full-width
+    span on-tap="edit()" ng-hide="underEdition"
+      | {{timer().secondsLeft() | duration}}
+    div.edit-timer ng-if="underEdition"
+      input.center-text.display-inline-block(ng-model="edits.length" type="tel" autofocus)
+
+      .row.controls
+         .col
+            i.icon.ion-close on-tap="closeEditForm()"
+         .col
+            i.icon.ion-checkmark on-tap="updateTimer()"
+
+  round-progress max="timer().length" current="timer().secondsPassed()" color="#45ccce" bgcolor="#eaeaea" radius="100" stroke="10" rounded="true" iterations="50" animation="easeInOutQuart"

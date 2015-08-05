@@ -1,10 +1,16 @@
 import "spec_helper";
 
 describe("Timer", () => {
+  let mockedServerTimeValue;
+
   beforeEach(module('timeherd'));
+  beforeEach(module($provide => {
+    mockedServerTimeValue = 1000;
+    $provide.value('serverTime', function() { return mockedServerTimeValue; });
+  }));
 
   it("newly created timer is paused", inject(timer => {
-    expect(timer({}).secondsLeft).toEqual(25*60);
+    expect(timer({}).secondsLeft()).toEqual(25*60);
     expect(timer({}).status).toEqual('paused');
   }));
 
@@ -13,40 +19,38 @@ describe("Timer", () => {
     expect(t.id).toEqual('foo');
   }));
 
-  it("counts down the timer", inject((timer, $interval) => {
+  it("counts down the timer", inject((timer) => {
     var t = timer({secondsLeft: 100}).start();
 
-    $interval.flush(5000);
+    mockedServerTimeValue = 6000;
 
-    expect(t.secondsLeft).toEqual(95);
+    expect(t.secondsLeft()).toEqual(95);
   }));
 
-  it("doesn't go below zero", inject((timer, $interval) => {
+  it("doesn't go below zero", inject((timer) => {
     var t = timer({secondsLeft: 5}).start();
 
-    $interval.flush(10000);
+    mockedServerTimeValue = 8000;
 
-    expect(t.secondsLeft).toEqual(0);
+    expect(t.secondsLeft()).toEqual(0);
   }));
 
-  it("resets when length is changed", inject((timer, $interval) => {
+  it("resets when length is changed", inject((timer) => {
     var t = timer({secondsLeft: 5}).start();
     t.length = 4;
 
-    $interval.flush(10000);
-
-    expect(t.secondsLeft).toEqual(4);
+    expect(t.secondsLeft()).toEqual(4);
     expect(t.length).toEqual(4);
     expect(t.status).toEqual('paused');
   }));
 
-  it("doesn't count down if timer is paused", inject((timer, $interval) => {
+  it("doesn't count down if timer is paused", inject((timer) => {
     var t = timer({secondsLeft: 5}).start();
     t.stop();
 
-    $interval.flush(10000);
+    mockedServerTimeValue = 6000;
 
-    expect(t.secondsLeft).toEqual(5);
+    expect(t.secondsLeft()).toEqual(5);
   }));
 
   it("fires onFinish callback when countdown completes", inject((timer, $interval) => {
@@ -54,6 +58,7 @@ describe("Timer", () => {
     var finishSpy = jasmine.createSpy();
     t.onFinish(finishSpy);
 
+    mockedServerTimeValue = 6000;
     $interval.flush(5000);
 
     expect(finishSpy).toHaveBeenCalled();
@@ -65,18 +70,18 @@ describe("Timer", () => {
     var finishSpy = jasmine.createSpy();
     t.onFinish(finishSpy);
 
-    $interval.flush(4000);
+    mockedServerTimeValue = 4000;
+    $interval.flush(5000);
 
     expect(finishSpy).not.toHaveBeenCalled();
     expect(t.status).toEqual('running');
   }));
 
-  it("resets the timer", inject((timer, $interval) => {
+  it("resets the timer", inject((timer) => {
     var t = timer({secondsLeft: 5}).start();
-    $interval.flush(1000);
     t.reset();
 
-    expect(t.secondsLeft).toEqual(5);
+    expect(t.secondsLeft()).toEqual(5);
     expect(t.status).toEqual('paused');
   }));
 });

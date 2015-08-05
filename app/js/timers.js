@@ -39,37 +39,23 @@ export class TimerController {
     this.$cordovaLocalNotification.clear(0);
     this.timer().reset();
   }
-
-  edit() {
-    this.length = this.timer().length;
-    this.underEdition = true;
-  }
-
-  closeEditForm() {
-    this.underEdition = false;
-  }
-
-  updateTimer() {
-    this.timer().length = this.length;
-    this.underEdition = false;
-    this.timer().start();
-  }
 }
 
-export function timer($interval) {
+export function timer(serverTime, $interval) {
   return function({secondsLeft = 25*60, timerSync = {$save: angular.noop}}) {
     var timer = {
-      get id() { return timerSync.$id },
-      get secondsLeft() { return timerSync.secondsLeft; },
-      get secondsPassed() { return timerSync.length - timerSync.secondsLeft },
-      get status() { return timerSync.status; },
-      get length() { return timerSync.length; },
-      set length(length) {
-        this.stop();
-        timerSync.length = length;
-        timerSync.secondsLeft = length;
-        timerSync.$save();
+      get id() { return timerSync.$id; },
+      get status() {
+        if (this.finished) { return 'finished'; }
+        return this.actions.length.isEven() ? 'paused' : 'running';
       },
+      get length() { return this._length; },
+      set length(length) {
+        this.actions = [];
+        this._length = length;
+      },
+
+      actions: [],
 
       onFinish(callback) {
         this.callback = callback
@@ -79,28 +65,42 @@ export function timer($interval) {
         (this.callback || angular.noop)();
       },
 
-      stop() {
-        timerSync.status = 'paused';
-        timerSync.$save();
+      millisPassed() {
+        return this.actions
+          .concat([serverTime()])
+          .inGroupsOf(2)
+          .filter(([start, end]) => start && end)
+          .map(([start, end]) => end - start)
+          .reduce((a, b) => a + b, 0);
+      },
 
-        $interval.cancel(timer.tick);
+      secondsPassed() {
+        return (this.millisPassed() / 1000).round();
+      },
+
+      millisLeft() {
+        const left = this.length * 1000 - this.millisPassed();
+        return left < 0 ? 0 : left;
+      },
+
+      secondsLeft() {
+        return (this.millisLeft() / 1000).round();
+      },
+
+      stop() {
+        this.actions.push(serverTime());
         return this;
       },
 
       start() {
-        timerSync.status = 'running';
-        timerSync.$save();
-
-        if (timerSync.secondsLeft <= 0) { return; }
-        timer.tick = $interval(() => {
-          timerSync.secondsLeft -= 1
-
-          if (timerSync.secondsLeft === 0) {
-            timerSync.status = 'finished';
+        this.actions.push(serverTime());
+        $interval(() => {
+          if (this.millisLeft() <= 0) {
+            this.finished = true;
             this.runFinishCallback();
           }
-          timerSync.$save();
-        }, 1000, timerSync.secondsLeft);
+        }, this.millisLeft());
+
         return this;
       },
 
