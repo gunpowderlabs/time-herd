@@ -5,6 +5,7 @@ describe("currentTimer", () => {
   beforeEach(module('timeherd'));
   beforeEach(module($provide => {
     $provide.value('chance', mockChance());
+    $provide.value('alarm', {start: angular.noop, stop: angular.noop});
     $provide.factory('timerIdStream', () => new Bacon.Bus());
   }));
 

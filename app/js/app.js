@@ -9,6 +9,7 @@ import ngAudio from "ng-audio";
 import Bacon from "bacon";
 import Chance from "chance";
 
+import TimerController from './timer_controller';
 import * as timers from './timers';
 import {duration} from './filters';
 import $cordovaShake from './shake';
@@ -16,6 +17,9 @@ import timerIdStream from './timer_id_stream';
 import currentTimer from './current_timer';
 import serverTime from './server_time';
 import timerDirective from './timer_directive';
+import alarm from './alarm';
+import alarmNotification from './alarm_notification';
+import alarmStopStream from './alarm_stop_stream';
 
 var openURLStream = new Bacon.Bus();
 window.handleOpenURL = (url) => openURLStream.push(url)
@@ -23,7 +27,7 @@ window.handleOpenURL = (url) => openURLStream.push(url)
 var app = angular.module('timeherd', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
     ngAutofocus.name, ngAudio.name, ngCordova.name]);
 
-app.controller('TimerController', timers.TimerController);
+app.controller('TimerController', TimerController);
 app.factory('timer', timers.timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
@@ -33,6 +37,9 @@ app.factory('timerIdStream', timerIdStream);
 app.value('chance', Chance());
 app.factory('serverTime', serverTime);
 app.directive('timer', timerDirective);
+app.factory('alarm', alarm);
+app.factory('alarmNotification', alarmNotification);
+app.factory('alarmStopStream', alarmStopStream);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -49,7 +56,7 @@ app.run(function($rootScope) {
   Bacon.Observable.prototype.$onValue = function() {
     const self = this;
     const args = arguments;
-    $rootScope.$apply(() => Bacon.Observable.prototype.onValue.apply(self, args));
+    $rootScope.$applyAsync(() => Bacon.Observable.prototype.onValue.apply(self, args));
   };
 });
 

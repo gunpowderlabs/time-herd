@@ -1,46 +1,3 @@
-export class TimerController {
-  constructor(currentTimer, ngAudio, $cordovaShake, $cordovaSocialSharing, $cordovaLocalNotification, $rootScope) {
-    this.$cordovaSocialSharing = $cordovaSocialSharing;
-    this.$cordovaLocalNotification = $cordovaLocalNotification;
-
-    this.alarm = ngAudio.load("sounds/alarm.mp3");
-    this.alarm.loop = true;
-
-    this.timer = currentTimer;
-    this.timer().onFinish(() => {
-      this.alarm.play();
-      $cordovaLocalNotification.schedule({
-        id: 0,
-        text: 'Time passed! Tap this notification to stop the alarm.',
-        sound: null
-      });
-    });
-
-    $rootScope.$on('$cordovaLocalNotification:click', () => this.stop());
-    $cordovaShake.watch(() => this.stop(), 20);
-  }
-
-  share() {
-    this.$cordovaSocialSharing.share(undefined, "Share a timer with me at TimeHerd",
-      undefined, `https://timeherd.divshot.io/${this.timer().id}`);
-  }
-
-  pause() {
-    this.timer().stop();
-  }
-
-  start() {
-    this.timer().start();
-  }
-
-  stop() {
-    if(this.timer().status !== 'finished') { return; }
-    this.alarm.stop();
-    this.$cordovaLocalNotification.clear(0);
-    this.timer().reset();
-  }
-}
-
 export function timer(serverTime, $interval) {
   return function({secondsLeft = 25*60, timerSync = {$save: angular.noop}}) {
     var timer = {
@@ -52,6 +9,7 @@ export function timer(serverTime, $interval) {
       get length() { return this._length; },
       set length(length) {
         this.actions = [];
+        this.finished = false;
         this._length = length;
       },
 

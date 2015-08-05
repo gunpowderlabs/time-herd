@@ -77,8 +77,11 @@ describe("Timer", () => {
     expect(t.status).toEqual('running');
   }));
 
-  it("resets the timer", inject((timer) => {
+  it("resets the timer", inject((timer, $interval) => {
     var t = timer({secondsLeft: 5}).start();
+    mockedServerTimeValue = 6000;
+    $interval.flush(5000);
+
     t.reset();
 
     expect(t.secondsLeft()).toEqual(5);
