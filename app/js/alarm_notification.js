@@ -11,7 +11,7 @@ export default function($cordovaLocalNotification) {
 
     hide() {
       if (!window.cordova) { return; }
-      $cordovaLocalNotification.clear(0);
+      $cordovaLocalNotification.cancel(0);
     }
   }
 }
