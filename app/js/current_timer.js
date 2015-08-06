@@ -23,8 +23,16 @@ export default function currentTimer($window, chance, timer, $firebaseObject,
 
   timerIdStream.onValue(buildTimer);
 
-  return function() {
+  function current() {
     return timerInstance || buildTimer();
   }
+
+  current.destroy = () => {
+    alarmStopStream.push();
+    if (timerInstance) { timerInstance.destroy(); }
+    buildTimer();
+  }
+
+  return current;
 }
 

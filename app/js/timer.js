@@ -47,12 +47,13 @@ export default function timer(serverTime, $interval) {
 
       stop() {
         timerSync.actions.$add(serverTime());
+        this.cancelFinishCallback();
         return this;
       },
 
       start() {
         timerSync.actions.$add(serverTime());
-        $interval(() => {
+        this.finishIntervalCallback = $interval(() => {
           if (this.millisLeft() <= 0) {
             this.finished = true;
             this.runFinishCallback();
@@ -64,6 +65,14 @@ export default function timer(serverTime, $interval) {
 
       reset() {
         this.length = this.length;
+      },
+
+      cancelFinishCallback() {
+        $interval.cancel(this.finishIntervalCallback);
+      },
+
+      destroy() {
+        this.cancelFinishCallback();
       }
     }
 

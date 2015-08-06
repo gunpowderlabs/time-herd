@@ -113,4 +113,16 @@ describe("Timer", () => {
     expect(t.secondsLeft()).toEqual(5);
     expect(t.status).toEqual('paused');
   }));
+
+  it("doesn't run onFinish callback after being destroyed", inject((timer, $interval) => {
+    var t = timer({secondsLeft: 5}).start();
+    var finishSpy = jasmine.createSpy();
+    t.onFinish(finishSpy);
+    t.destroy();
+
+    mockedServerTimeValue = 6000;
+    $interval.flush(5000);
+
+    expect(finishSpy).not.toHaveBeenCalled();
+  }));
 });

@@ -21,5 +21,9 @@ export default class TimerController {
   stop() {
     this.alarmStopStream.push();
   }
+
+  destroy() {
+    this.timer.destroy();
+  }
 }
 

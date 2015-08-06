@@ -3,7 +3,7 @@ ion-content ng-controller="TimerController as timer"
     timer timer="timer.timer()"
 
     .row.height-3x
-      .col.font-2x.color-assertive
+      .col.font-2x.color-assertive on-tap="timer.destroy()"
         i.icon.ion-trash-b
       .col.font-3x ng-switch="timer.timer().status"
         i.icon.ion-pause on-tap="timer.pause()" ng-switch-when="running"
