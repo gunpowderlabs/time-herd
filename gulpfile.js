@@ -37,6 +37,7 @@ function libraries() {
     almond: "www/lib/almond/almond",
     "angular-mocks": "www/lib/angular-mocks/angular-mocks",
     bacon: "www/lib/bacon/dist/Bacon",
+    "angular-mask": "www/lib/angular-mask/dist/ngMask"
   }
 }
 
@@ -46,6 +47,10 @@ var shims = {
   },
   "angular-mocks": {
     deps: ['ionic'],
+  },
+  "angular-mask": {
+    deps: ['ionic'],
+    exports: "angular.module('ngMask')",
   },
   angularfire: {
     deps: ['firebase'],

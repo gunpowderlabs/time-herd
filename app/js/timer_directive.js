@@ -4,11 +4,11 @@ export default function() {
     scope: {
       timer: '&'
     },
-    controller: function($scope) {
+    controller: function($scope, $filter) {
       $scope.edits = {};
 
       $scope.edit = function() {
-        $scope.edits.length = $scope.timer().length;
+        $scope.edits.length = $filter('duration')($scope.timer().length);
         $scope.underEdition = true;
       };
 
@@ -17,7 +17,11 @@ export default function() {
       };
 
       $scope.updateTimer = function() {
-        $scope.timer().length = $scope.edits.length;
+        const length = $scope.edits.length
+          .split(":")
+          .map(Number)
+          .reduce((a, b) => a * 60 + b);
+        $scope.timer().length = length;
         $scope.underEdition = false;
         $scope.timer().start();
       };

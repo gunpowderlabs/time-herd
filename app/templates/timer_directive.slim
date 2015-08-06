@@ -3,7 +3,7 @@ div
     span on-tap="edit()" ng-hide="underEdition"
       | {{timer().secondsLeft() | duration}}
     div.edit-timer ng-if="underEdition"
-      input.center-text.display-inline-block(ng-model="edits.length" type="tel" autofocus)
+      input.center-text.display-inline-block(ng-model="edits.length" type="tel" autofocus mask="99:99:99")
 
       .row.controls
          .col

@@ -6,6 +6,7 @@ import angularfire from "angularfire"
 import angularSVGRoundProgress from "angular-svg-round-progressbar";
 import ngAutofocus from "ng-autofocus";
 import ngAudio from "ng-audio";
+import ngMask from "angular-mask";
 import Bacon from "bacon";
 import Chance from "chance";
 
@@ -25,7 +26,7 @@ var openURLStream = new Bacon.Bus();
 window.handleOpenURL = (url) => openURLStream.push(url)
 
 var app = angular.module('timeherd', [ionic.name, angularfire.name, angularSVGRoundProgress.name,
-    ngAutofocus.name, ngAudio.name, ngCordova.name]);
+    ngAutofocus.name, ngAudio.name, ngCordova.name, ngMask.name]);
 
 app.controller('TimerController', TimerController);
 app.factory('timer', timers.timer);
