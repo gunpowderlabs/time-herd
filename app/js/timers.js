@@ -1,19 +1,18 @@
 export function timer(serverTime, $interval) {
-  return function({secondsLeft = 25*60, timerSync = {$save: angular.noop}}) {
-    var timer = {
-      get id() { return timerSync.$id; },
+  return function({secondsLeft = 25*60, timerSync = undefined, reset = true}) {
+    const timer = {
+      get id() { return timerSync.controls.$id; },
       get status() {
         if (this.finished) { return 'finished'; }
-        return this.actions.length.isEven() ? 'paused' : 'running';
+        return timerSync.actions.length.isEven() ? 'paused' : 'running';
       },
-      get length() { return this._length; },
+      get length() { return timerSync.controls.length; },
       set length(length) {
-        this.actions = [];
+        timerSync.controls.length = length;
+        timerSync.controls.$save();
+        timerSync.actions.map(action => timerSync.actions.$remove(action));
         this.finished = false;
-        this._length = length;
       },
-
-      actions: [],
 
       onFinish(callback) {
         this.callback = callback
@@ -24,7 +23,7 @@ export function timer(serverTime, $interval) {
       },
 
       millisPassed() {
-        return this.actions
+        return timerSync.actions.map('$value')
           .concat([serverTime()])
           .inGroupsOf(2)
           .filter(([start, end]) => start && end)
@@ -46,12 +45,12 @@ export function timer(serverTime, $interval) {
       },
 
       stop() {
-        this.actions.push(serverTime());
+        timerSync.actions.$add(serverTime());
         return this;
       },
 
       start() {
-        this.actions.push(serverTime());
+        timerSync.actions.$add(serverTime());
         $interval(() => {
           if (this.millisLeft() <= 0) {
             this.finished = true;
@@ -67,7 +66,7 @@ export function timer(serverTime, $interval) {
       }
     }
 
-    timer.length = secondsLeft;
+    if (reset) { timer.length = secondsLeft; }
 
     return timer;
   };

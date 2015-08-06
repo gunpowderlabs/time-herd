@@ -1,12 +1,17 @@
-export default function currentTimer($window, chance, timer, $firebaseObject, timerIdStream, alarm, alarmStopStream) {
+export default function currentTimer($window, chance, timer, $firebaseObject,
+    $firebaseArray, timerIdStream, alarm, alarmStopStream) {
   let timerInstance;
   function firebaseTimer(timerId = chance.hash()) {
-    var timersRef = new $window.Firebase("https://shining-heat-7954.firebaseio.com/timers");
-    return $firebaseObject(timersRef.child(timerId));
+    const timersRef = new $window.Firebase("https://shining-heat-7954.firebaseio.com/timers");
+    const timerRef = timersRef.child(timerId);
+    return {
+      controls: $firebaseObject(timerRef),
+      actions: $firebaseArray(timerRef.child("actions"))
+    };
   }
 
   function buildTimer(id) {
-    timerInstance = timer({timerSync: firebaseTimer(id)});
+    timerInstance = timer({timerSync: firebaseTimer(id), reset: !id});
     timerInstance.onFinish(alarm.start);
     alarmStopStream.$onValue(() => {
       if(timerInstance.status !== 'finished') { return; }

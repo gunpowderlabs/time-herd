@@ -1,12 +1,30 @@
 import "spec_helper";
 
 describe("Timer", () => {
+  function timerSyncMock() {
+    const actions = [];
+    actions.$add = i => actions.push({$value: i});;
+    actions.$remove = actions.remove;
+    return {
+      controls: {
+        $id: 'foo',
+        $save: angular.noop
+      },
+      actions: actions
+    }
+  }
   let mockedServerTimeValue;
 
   beforeEach(module('timeherd'));
   beforeEach(module($provide => {
     mockedServerTimeValue = 1000;
     $provide.value('serverTime', function() { return mockedServerTimeValue; });
+    $provide.decorator('timer', $delegate => {
+      return function(opts) {
+        opts.timerSync = timerSyncMock();
+        return $delegate(opts);
+      };
+    });
   }));
 
   it("newly created timer is paused", inject(timer => {
@@ -15,7 +33,7 @@ describe("Timer", () => {
   }));
 
   it("returns the timer id", inject(timer => {
-    var t = timer({timerSync: {$id: "foo", $save: angular.noop}});
+    var t = timer({});
     expect(t.id).toEqual('foo');
   }));
 
