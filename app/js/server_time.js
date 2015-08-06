@@ -1,4 +1,4 @@
-export default function($interval, $http, $log) {
+export default function($interval, $http, $log, $rootScope) {
   let bestOffset = 0;
   let bestPrecision;
   function adjustOffest(times) {
@@ -30,7 +30,10 @@ export default function($interval, $http, $log) {
     request.send();
   }
 
-  $interval(getServerTime, 500, 10);
+  function syncTime() { $interval(getServerTime, 500, 10); }
+
+  $rootScope.$on('$cordovaNetwork:online', syncTime);
+  syncTime();
 
   return function() {
     return Date.now() + bestOffset;
