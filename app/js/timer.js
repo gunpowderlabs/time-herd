@@ -1,4 +1,4 @@
-export function timer(serverTime, $interval) {
+export default function timer(serverTime, $interval) {
   return function({secondsLeft = 25*60, timerSync = undefined, reset = true}) {
     const timer = {
       get id() { return timerSync.controls.$id; },
@@ -32,7 +32,8 @@ export function timer(serverTime, $interval) {
       },
 
       secondsPassed() {
-        return (this.millisPassed() / 1000).round();
+        let passed = (this.millisPassed() / 1000).round();
+        return passed > this.length ? this.length : passed;
       },
 
       millisLeft() {

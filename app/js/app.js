@@ -11,7 +11,7 @@ import Bacon from "bacon";
 import Chance from "chance";
 
 import TimerController from './timer_controller';
-import * as timers from './timers';
+import timer from './timer';
 import {duration} from './filters';
 import $cordovaShake from './shake';
 import timerIdStream from './timer_id_stream';
@@ -29,7 +29,7 @@ var app = angular.module('timeherd', [ionic.name, angularfire.name, angularSVGRo
     ngAutofocus.name, ngAudio.name, ngCordova.name, ngMask.name]);
 
 app.controller('TimerController', TimerController);
-app.factory('timer', timers.timer);
+app.factory('timer', timer);
 app.filter('duration', duration);
 app.factory('$cordovaShake', $cordovaShake);
 app.factory('currentTimer', currentTimer);

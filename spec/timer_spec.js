@@ -71,6 +71,14 @@ describe("Timer", () => {
     expect(t.secondsLeft()).toEqual(5);
   }));
 
+  it("secodsPassed returns at most timer length", inject(timer => {
+    var t = timer({secondsLeft: 5}).start();
+
+    mockedServerTimeValue = 10000;
+
+    expect(t.secondsPassed()).toEqual(5);
+  }));
+
   it("fires onFinish callback when countdown completes", inject((timer, $interval) => {
     var t = timer({secondsLeft: 5}).start();
     var finishSpy = jasmine.createSpy();
