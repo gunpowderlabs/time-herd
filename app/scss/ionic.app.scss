@@ -42,11 +42,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-size: 35px;
 }
 
+.platform-android {
+  .edit-timer {
+    input {
+      margin-top: 0;
+    }
+  }
+}
+
 .edit-timer {
   line-height: 1em;
   margin-top: 78px;
 
   input {
+    margin-top: 1px;
+    text-align: center;
+    padding: 0;
     display: inline-block;
     font-size: 35px;
     width: 170px;
